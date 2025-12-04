@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev & open-cli http://localhost:3000",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
@@ -19,8 +19,10 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
+    "baseline-browser-mapping": "^2.9.2",
     "eslint": "^9",
     "eslint-config-next": "16.0.3",
+    "open-cli": "^8.0.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
