@@ -9,7 +9,7 @@ export interface HeaderProps {
 
 export function Header({ data }: HeaderProps) {
   return (
-    <header className="flex px-4 sm:px-6 lg:px-8 py-4 bg-zinc-900 text-white">
+    <header className="flex px-4 sm:px-6 lg:px-8 py-4 bg-zinc-900 text-white sticky top-0">
       <div className="flex items-center justify-between w-full mx-auto max-w-7xl">
         <div>
           <Link href={"/"}>NextJS</Link>

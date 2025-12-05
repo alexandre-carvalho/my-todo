@@ -9,7 +9,9 @@ export default function PrivateLayout({
   return (
     <div>
       <Header data={[...privateNavbarLinks]} />
-      {children}
+      <main className="flex justify-center items-center max-w-screen">
+        {children}
+      </main>
     </div>
   );
 }
