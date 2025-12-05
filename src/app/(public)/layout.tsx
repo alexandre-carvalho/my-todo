@@ -9,7 +9,9 @@ export default function PublicLayout({
   return (
     <div>
       <Header data={[...publicNavbarLinks]} />
-      {children}
+      <main className="flex justify-center items-center max-w-screen">
+        {children}
+      </main>
     </div>
   );
 }
