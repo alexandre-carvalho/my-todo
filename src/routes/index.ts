@@ -1,7 +1,6 @@
 export class PublicRoutes {
   static readonly SIGN_IN = "/sign-in";
   static readonly REGISTER = "/register";
-  static readonly ABOUT = "/about";
   static readonly RESET_PASSWORD = "/reset-password";
 }
 
