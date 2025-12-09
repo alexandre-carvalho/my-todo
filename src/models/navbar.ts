@@ -5,14 +5,13 @@ export interface NavbarLink {
   label: string;
 }
 
-export const publicNavbarLinks: NavbarLink[] = [
+export const externalNavbarLinks: NavbarLink[] = [
   { href: PublicRoutes.SIGN_IN, label: "Entrar" },
   { href: PublicRoutes.REGISTER, label: "Cadastrar" },
   { href: PublicRoutes.RESET_PASSWORD, label: "Recuperar Senha" },
-  { href: PublicRoutes.ABOUT, label: "Sobre" },
 ];
 
-export const privateNavbarLinks: NavbarLink[] = [
+export const internalNavbarLinks: NavbarLink[] = [
   { href: PrivateRoutes.HOME, label: "Início" },
   { href: PrivateRoutes.CHANGE_PASSWORD, label: "Alterar Senha" },
 ];

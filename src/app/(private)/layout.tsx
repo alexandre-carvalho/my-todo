@@ -1,5 +1,5 @@
 import { Header } from "@/components/header";
-import { privateNavbarLinks } from "@/models/navbar";
+import { internalNavbarLinks } from "@/models/navbar";
 
 export default function PrivateLayout({
   children,
@@ -8,7 +8,7 @@ export default function PrivateLayout({
 }>) {
   return (
     <div>
-      <Header data={[...privateNavbarLinks]} />
+      <Header data={[...internalNavbarLinks]} />
       <main className="flex justify-center items-center max-w-screen">
         {children}
       </main>
