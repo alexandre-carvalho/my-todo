@@ -1,15 +1,19 @@
-import { MouseEvent } from "react";
-
 export interface ButtonBaseProps {
   label: string;
-  onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
 }
 
-export function ButtonBase({ label, onClick }: ButtonBaseProps) {
+export function ButtonBase({ label, type, disabled }: ButtonBaseProps) {
   return (
     <button
-      onClick={onClick}
-      className="flex justify-center bg-cyan-700 hover:bg-cyan-600 text-white font-semibold rounded-md w-[200px] p-2 transition duration-150"
+      type={type}
+      disabled={disabled}
+      className={`flex w-full justify-center text-white font-semibold rounded-md p-2 transition duration-150 ${
+        disabled
+          ? "bg-gray-400 cursor-not-allowed"
+          : "bg-cyan-700 hover:bg-cyan-600"
+      }`}
     >
       <span>{label}</span>
     </button>
