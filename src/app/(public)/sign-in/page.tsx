@@ -1,6 +1,11 @@
 "use client";
 import { ButtonBase } from "@/components/buttons/button-base";
+import { auth } from "@/utils/firebase";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { FirebaseError } from "firebase/app";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -13,6 +18,9 @@ const signInSchema = z.object({
 });
 
 export default function SignIn() {
+  const [isPending, setIsPending] = useState(false);
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -21,9 +29,30 @@ export default function SignIn() {
     resolver: zodResolver(signInSchema),
   });
 
-  const handleSubmitForm = (data: z.infer<typeof signInSchema>) => {
-    console.log("Username:", data.username, "Password:", data.password);
-    // Handle login logic here (e.g., API call)
+  const handleSignIn = async (data: z.infer<typeof signInSchema>) => {
+    setIsPending(true);
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        data.username,
+        data.password
+      );
+      const user = userCredential.user;
+      alert("Usuário logado com sucesso!" + JSON.stringify(user));
+      setIsPending(false);
+      router.push("/");
+    } catch (error: unknown) {
+      if (error instanceof FirebaseError) {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        alert(
+          "Erro ao logar usuário: " +
+            JSON.stringify(errorMessage) +
+            " - " +
+            JSON.stringify(errorCode)
+        );
+      }
+    }
   };
 
   return (
@@ -34,10 +63,7 @@ export default function SignIn() {
             Faça seu login
           </h2>
         </div>
-        <form
-          className="mt-8 space-y-6"
-          onSubmit={handleSubmit(handleSubmitForm)}
-        >
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit(handleSignIn)}>
           <div className="space-y-4">
             <div>
               <label htmlFor="username-address" className="sr-only">
@@ -78,7 +104,7 @@ export default function SignIn() {
           </div>
 
           <div>
-            <ButtonBase label="Entrar" type="submit" />
+            <ButtonBase label="Entrar" type="submit" isLoading={isPending} />
           </div>
         </form>
       </div>

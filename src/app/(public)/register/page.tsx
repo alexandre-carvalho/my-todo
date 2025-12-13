@@ -4,6 +4,8 @@ import { auth } from "@/utils/firebase";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FirebaseError } from "firebase/app";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -16,6 +18,9 @@ const registerSchema = z.object({
 });
 
 export default function Register() {
+  const [isPending, setIsPending] = useState(false);
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -25,7 +30,7 @@ export default function Register() {
   });
 
   const handleRegister = async (data: z.infer<typeof registerSchema>) => {
-    console.log("Dados do formulário: ", data);
+    setIsPending(true);
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -33,18 +38,22 @@ export default function Register() {
         data.password
       );
       const user = userCredential.user;
-      console.log("Usuário cadastrado com sucesso! ", { user });
+      alert("Usuário cadastrado com sucesso! " + JSON.stringify(user));
+      setIsPending(false);
+      router.push("/");
     } catch (error: unknown) {
       if (error instanceof FirebaseError) {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(
-          "Erro ao cadastrar usuário: ",
-          { errorMessage },
-          { errorCode }
+        alert(
+          "Erro ao cadastrar usuário: " +
+            JSON.stringify(errorMessage) +
+            " - " +
+            JSON.stringify(errorCode)
         );
       }
     }
+    setIsPending(false);
   };
 
   return (
@@ -99,7 +108,7 @@ export default function Register() {
           </div>
 
           <div>
-            <ButtonBase label="Cadastrar" type="submit" />
+            <ButtonBase label="Cadastrar" type="submit" isLoading={isPending} />
           </div>
         </form>
       </div>
