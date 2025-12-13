@@ -2,9 +2,15 @@ export interface ButtonBaseProps {
   label: string;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
+  isLoading?: boolean;
 }
 
-export function ButtonBase({ label, type, disabled }: ButtonBaseProps) {
+export function ButtonBase({
+  label,
+  type,
+  disabled,
+  isLoading,
+}: ButtonBaseProps) {
   return (
     <button
       type={type}
@@ -15,7 +21,7 @@ export function ButtonBase({ label, type, disabled }: ButtonBaseProps) {
           : "bg-cyan-700 hover:bg-cyan-600"
       }`}
     >
-      <span>{label}</span>
+      <span className="mr-2">{isLoading ? "Carregando..." : label}</span>
     </button>
   );
 }
