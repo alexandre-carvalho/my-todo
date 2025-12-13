@@ -3,6 +3,7 @@ export interface ButtonBaseProps {
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
   isLoading?: boolean;
+  onClick?: () => void;
 }
 
 export function ButtonBase({
@@ -10,6 +11,7 @@ export function ButtonBase({
   type,
   disabled,
   isLoading,
+  onClick,
 }: ButtonBaseProps) {
   return (
     <button
@@ -20,6 +22,7 @@ export function ButtonBase({
           ? "bg-gray-400 cursor-not-allowed"
           : "bg-cyan-700 hover:bg-cyan-600"
       }`}
+      onClick={onClick}
     >
       <span className="mr-2">{isLoading ? "Carregando..." : label}</span>
     </button>
