@@ -62,7 +62,7 @@ export default function SignIn() {
       // Isso garante que o Middleware rode com o cookie já definido
       router.refresh();
       router.push("/");
-    } catch (error: unknown) {
+    } catch (error: unknown | FirebaseError) {
       setIsPending(false); // Resetar loading state no erro
 
       if (error instanceof FirebaseError) {
@@ -134,6 +134,7 @@ export default function SignIn() {
               type="submit"
               isLoading={isPending}
               disabled={isPending}
+              className="default"
             />
           </div>
         </form>

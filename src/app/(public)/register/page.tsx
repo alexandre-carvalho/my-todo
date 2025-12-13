@@ -55,7 +55,7 @@ export default function Register() {
       setIsPending(false);
       router.refresh();
       router.push("/");
-    } catch (error: unknown) {
+    } catch (error: unknown | FirebaseError) {
       if (error instanceof FirebaseError) {
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -127,6 +127,7 @@ export default function Register() {
               type="submit"
               isLoading={isPending}
               disabled={isPending}
+              className="default"
             />
           </div>
         </form>

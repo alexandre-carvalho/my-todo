@@ -36,7 +36,7 @@ export default function ResetPassword() {
       alert("Email enviado para resetar a senha! " + JSON.stringify(user));
       setIsPending(false);
       router.push("/login");
-    } catch (error: unknown) {
+    } catch (error: unknown | FirebaseError) {
       if (error instanceof FirebaseError) {
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -89,6 +89,8 @@ export default function ResetPassword() {
               label="Enviar email"
               type="submit"
               isLoading={isPending}
+              disabled={isPending}
+              className="default"
             />
           </div>
         </form>
