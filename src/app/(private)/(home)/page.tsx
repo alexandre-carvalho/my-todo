@@ -43,6 +43,7 @@ export default function Home() {
           onClick={handleSignOut}
           isLoading={isPending}
           disabled={isPending}
+          className="default"
         />
       </div>
       <p className="mt-6">Bem-vindo à área logada da aplicação.</p>

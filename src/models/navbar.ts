@@ -14,4 +14,5 @@ export const externalNavbarLinks: NavbarLink[] = [
 export const internalNavbarLinks: NavbarLink[] = [
   { href: PrivateRoutes.HOME, label: "Início" },
   { href: PrivateRoutes.CHANGE_PASSWORD, label: "Alterar Senha" },
+  { href: PrivateRoutes.DELETE_ACCOUNT, label: "Excluir Conta" },
 ];

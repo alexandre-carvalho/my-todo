@@ -7,4 +7,5 @@ export class PublicRoutes {
 export class PrivateRoutes {
   static readonly HOME = "/";
   static readonly CHANGE_PASSWORD = "/change-password";
+  static readonly DELETE_ACCOUNT = "/delete-account";
 }
