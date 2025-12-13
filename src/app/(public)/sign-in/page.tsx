@@ -38,10 +38,33 @@ export default function SignIn() {
         data.password
       );
       const user = userCredential.user;
-      alert("Usuário logado com sucesso!" + JSON.stringify(user));
+
+      // 1. Obter o ID Token JWT do Firebase
+      const idToken = await user.getIdToken();
+
+      // 2. Enviar o token para a API Route para definir o cookie HTTP-only
+      const response = await fetch("/api/set-cookie", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token: idToken }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Falha ao definir o cookie de sessão.");
+      }
+
+      // alert("Usuário logado com sucesso!"); // Removido para fluxo mais limpo
       setIsPending(false);
+
+      // 3. Forçar a revalidação e redirecionamento
+      // Isso garante que o Middleware rode com o cookie já definido
+      router.refresh();
       router.push("/");
     } catch (error: unknown) {
+      setIsPending(false); // Resetar loading state no erro
+
       if (error instanceof FirebaseError) {
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -51,6 +74,8 @@ export default function SignIn() {
             " - " +
             JSON.stringify(errorCode)
         );
+      } else if (error instanceof Error) {
+        alert("Ocorreu um erro inesperado: " + error.message);
       }
     }
   };
@@ -104,7 +129,12 @@ export default function SignIn() {
           </div>
 
           <div>
-            <ButtonBase label="Entrar" type="submit" isLoading={isPending} />
+            <ButtonBase
+              label="Entrar"
+              type="submit"
+              isLoading={isPending}
+              disabled={isPending}
+            />
           </div>
         </form>
       </div>

@@ -38,8 +38,22 @@ export default function Register() {
         data.password
       );
       const user = userCredential.user;
-      alert("Usuário cadastrado com sucesso! " + JSON.stringify(user));
+
+      const idToken = await user.getIdToken();
+      const response = await fetch("/api/set-cookie", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token: idToken }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Falha ao definir o cookie de sessão.");
+      }
+
       setIsPending(false);
+      router.refresh();
       router.push("/");
     } catch (error: unknown) {
       if (error instanceof FirebaseError) {
@@ -108,7 +122,12 @@ export default function Register() {
           </div>
 
           <div>
-            <ButtonBase label="Cadastrar" type="submit" isLoading={isPending} />
+            <ButtonBase
+              label="Cadastrar"
+              type="submit"
+              isLoading={isPending}
+              disabled={isPending}
+            />
           </div>
         </form>
       </div>
