@@ -1,5 +1,3 @@
-// src/app/api/set-cookie/route.ts
-
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
@@ -15,11 +13,11 @@ export async function POST(request: Request) {
   );
 
   response.cookies.set({
-    name: "token", // Este nome deve bater com o nome usado no middleware ("token")
+    name: "token",
     value: token,
     httpOnly: true,
-    secure: process.env.NODE_ENV !== "development", // Use secure em produção
-    maxAge: 60 * 60 * 24 * 5, // 5 dias
+    secure: process.env.NODE_ENV !== "development",
+    maxAge: 60 * 60 * 24 * 5,
     path: "/",
   });
 
