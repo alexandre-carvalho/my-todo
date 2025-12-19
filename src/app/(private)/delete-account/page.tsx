@@ -14,7 +14,6 @@ export default function DeleteAccount() {
     const user = auth.currentUser;
 
     if (user) {
-      // Confirmação extra antes de prosseguir
       if (
         !window.confirm(
           "Tem certeza que deseja DELETAR sua conta? Esta ação é irreversível."
@@ -25,33 +24,23 @@ export default function DeleteAccount() {
 
       setIsPending(true);
       try {
-        // Tenta deletar o usuário no Firebase Auth
         await deleteUser(user);
-
-        // SUCESSO: Forçar o logout e redirecionar para o login
-
-        // 1. Limpa a sessão do lado do cliente (Firebase SDK)
         await signOut(auth);
 
-        // 2. Chama a API Route para limpar o cookie HTTP-only (que já criamos)
         await fetch("/api/sign-out", {
           method: "POST",
         });
-
-        // 3. Feedback e Redirecionamento forçado para a tela de login
         alert("Sua conta foi deletada com sucesso. Sentiremos sua falta!");
 
         router.push("/sign-in");
       } catch (error: unknown) {
-        setIsPending(false); // Resetar loading state no erro
+        setIsPending(false);
 
         if (error instanceof FirebaseError) {
-          // O erro mais comum aqui será auth/requires-recent-login.
           if (error.code === "auth/requires-recent-login") {
             alert(
               "Esta ação é sensível e requer um login recente. Por favor, faça logout e login novamente para confirmar sua identidade antes de deletar a conta."
             );
-            // Redireciona para o login para que o usuário possa re-autenticar
             router.push("/sign-in");
           } else {
             alert(
@@ -66,7 +55,6 @@ export default function DeleteAccount() {
         }
       }
     } else {
-      // Caso o usuário não esteja logado (currentUser é null), redirecione para login
       alert("Usuário não autenticado. Redirecionando para login.");
       router.push("/sign-in");
     }
@@ -85,11 +73,10 @@ export default function DeleteAccount() {
           </p>
         </div>
 
-        {/* Formulário Simples com Apenas um Botão */}
         <form
           className="mt-8 space-y-6"
           onSubmit={(e) => {
-            e.preventDefault(); // Previne o refresh padrão do form HTML
+            e.preventDefault();
             handleDeleteAccount();
           }}
         >

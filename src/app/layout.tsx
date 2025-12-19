@@ -4,7 +4,6 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "My Todo List",
   description: "Aplicação de lista de tarefas",
-  // openGraph é responsável por miniaturas de compartilhamento
   openGraph: {
     title: "My Todo List",
     description: "Aplicação de lista de tarefas",

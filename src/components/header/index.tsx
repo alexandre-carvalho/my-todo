@@ -12,7 +12,7 @@ export function Header({ data }: HeaderProps) {
     <header className="flex px-4 sm:px-6 lg:px-8 py-4 bg-zinc-900 text-white sticky top-0">
       <div className="flex items-center justify-between w-full mx-auto max-w-7xl">
         <div>
-          <Link href={"/"}>NextJS</Link>
+          <Link href={"/"}>My Todo List</Link>
         </div>
         <nav>
           <ul className="flex items-center justify-center gap-2">

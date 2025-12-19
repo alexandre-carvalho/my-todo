@@ -1,5 +1,4 @@
-// src/app/page.tsx
-"use client"; // Marca como Client Component para usar hooks e eventos do navegador
+"use client";
 
 import { ButtonBase } from "@/components/buttons/button-base";
 import { auth } from "@/utils/firebase";
@@ -14,16 +13,11 @@ export default function Home() {
   const handleSignOut = async () => {
     setIsPending(true);
     try {
-      // 1. Limpa a sessão do lado do cliente (Firebase SDK)
       await signOut(auth);
-
-      // 2. Chama a API Route para limpar o cookie HTTP-only
       await fetch("/api/sign-out", {
         method: "POST",
       });
 
-      // 3. Redireciona para a página de login
-      // router.refresh() garante que o middleware seja re-executado e veja que o cookie sumiu
       router.refresh();
       router.push("/sign-in");
     } catch (error) {
