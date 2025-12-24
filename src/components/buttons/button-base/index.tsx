@@ -1,3 +1,5 @@
+import { Loader2 } from "lucide-react";
+
 export interface ButtonBaseProps {
   label: string;
   type?: "button" | "submit" | "reset";
@@ -28,7 +30,13 @@ export function ButtonBase({
       }`}
       onClick={onClick}
     >
-      <span className="mr-2">{isLoading ? "Carregando..." : label}</span>
+      <span className="mr-2">
+        {isLoading ? (
+          <Loader2 className="animate-spin size-4 text-white mr-2  " />
+        ) : (
+          label
+        )}
+      </span>
     </button>
   );
 }
