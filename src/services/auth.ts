@@ -3,14 +3,22 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { useAuthStore } from "../store/auth";
 import { auth } from "../utils/firebase";
 
-export const signIn = async (data: { username: string; password: string }) => {
+interface SignInResult {
+  success: boolean;
+  error?: string;
+}
+
+export const signIn = async (data: {
+  username: string;
+  password: string;
+}): Promise<SignInResult> => {
   useAuthStore.setState({ loading: true });
 
   try {
     const userCredential = await signInWithEmailAndPassword(
       auth,
       data.username,
-      data.password
+      data.password,
     );
     const user = userCredential.user;
 
@@ -28,23 +36,30 @@ export const signIn = async (data: { username: string; password: string }) => {
       throw new Error("Falha ao definir o cookie de sessão.");
     }
 
-    useAuthStore.setState({ loading: false });
-    useAuthStore.setState({ success: true });
-  } catch (error: unknown | FirebaseError) {
-    useAuthStore.setState({ loading: false });
-    useAuthStore.setState({ success: false });
+    useAuthStore.setState({ loading: false, success: true });
+    return { success: true };
+  } catch (error: unknown) {
+    useAuthStore.setState({ loading: false, success: false });
+
+    let errorMessage = "Ocorreu um erro inesperado.";
 
     if (error instanceof FirebaseError) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      alert(
-        "Erro ao logar usuário: " +
-          JSON.stringify(errorMessage) +
-          " - " +
-          JSON.stringify(errorCode)
-      );
+      switch (error.code) {
+        case "auth/user-not-found":
+        case "auth/wrong-password":
+        case "auth/invalid-credential":
+          errorMessage = "E-mail ou senha inválidos.";
+          break;
+        case "auth/too-many-requests":
+          errorMessage = "Muitas tentativas. Tente novamente mais tarde.";
+          break;
+        default:
+          errorMessage = "Erro ao realizar login. Tente novamente.";
+      }
     } else if (error instanceof Error) {
-      alert("Ocorreu um erro inesperado: " + error.message);
+      errorMessage = error.message;
     }
+
+    return { success: false, error: errorMessage };
   }
 };

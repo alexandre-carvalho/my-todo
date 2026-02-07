@@ -1,5 +1,32 @@
 @import "tailwindcss";
 
+/* Enable dark mode by class (Tailwind v4) */
+@variant dark (&:where(.dark, .dark *));
+
+/* CSS Custom Properties for theming */
+:root {
+  --color-primary: #0891b2;
+  --color-primary-dark: #0e7490;
+  --color-background: #f8fafc;
+  --color-surface: #ffffff;
+  --color-text: #0f172a;
+  --color-text-secondary: #64748b;
+  --color-border: #e2e8f0;
+}
+
+/* Dark mode colors */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: #22d3ee;
+    --color-primary-dark: #06b6d4;
+    --color-background: #0f172a;
+    --color-surface: #1e293b;
+    --color-text: #f1f5f9;
+    --color-text-secondary: #94a3b8;
+    --color-border: #334155;
+  }
+}
+
 /* Reset and base styles */
 *,
 *::before,
@@ -8,48 +35,146 @@
 }
 
 html {
-  -webkit-text-size-adjust: 100%; /* Safari, older WebKit browsers */
-  -moz-text-size-adjust: 100%; /* Firefox */
-  text-size-adjust: 100%; /* Standard property for modern browsers */
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   line-height: 1.5;
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-body {
-  /* font-family: Arial, Helvetica, sans-serif; (existing) */
   margin: 0;
   min-height: 100vh;
-  background-color: #f7fafc; /* Tailwind's gray-50 */
-  color: #1a202c; /* Tailwind's gray-900 */
+  background-color: var(--color-background);
+  color: var(--color-text);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
+/* Dark mode class support (for manual toggle) */
+.dark {
+  --color-primary: #22d3ee;
+  --color-primary-dark: #06b6d4;
+  --color-background: #0f172a;
+  --color-surface: #1e293b;
+  --color-text: #f1f5f9;
+  --color-text-secondary: #94a3b8;
+  --color-border: #334155;
+}
+
+/* Smooth animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Container styles */
 @layer base {
-  /* Apply basic responsive container styles */
   .container {
     margin-left: auto;
     margin-right: auto;
-    padding-left: 1rem; /* 16px */
-    padding-right: 1rem; /* 16px */
-    max-width: 100%; /* Ensure it doesn't overflow small screens */
+    padding-left: 1rem;
+    padding-right: 1rem;
+    max-width: 100%;
   }
 
   @media (min-width: 640px) {
     .container {
-      padding-left: 1.5rem; /* 24px */
-      padding-right: 1.5rem; /* 24px */
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
     }
   }
 
   @media (min-width: 1024px) {
     .container {
-      padding-left: 2rem; /* 32px */
-      padding-right: 2rem; /* 32px */
+      padding-left: 2rem;
+      padding-right: 2rem;
     }
   }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-secondary);
+}
+
+/* Focus visible styles for accessibility */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Remove global focus outline from form inputs - they have custom styles */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none;
+}
+
+/* Selection color */
+::selection {
+  background-color: var(--color-primary);
+  color: white;
 }
