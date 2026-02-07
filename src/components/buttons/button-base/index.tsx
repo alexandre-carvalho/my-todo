@@ -21,18 +21,18 @@ export function ButtonBase({
     <button
       type={type}
       disabled={disabled}
-      className={`flex w-full justify-center text-white font-semibold rounded-md p-2 transition duration-150 ${
-        disabled ?? "bg-gray-400 cursor-not-allowed"
-      } ${
-        className === "danger"
-          ? "bg-red-600 hover:bg-red-700"
-          : "bg-cyan-700 hover:bg-cyan-600"
+      className={`flex w-full justify-center text-white font-semibold rounded-xl p-3 transition duration-200 ${
+        disabled
+          ? "bg-gray-400 dark:bg-gray-600 cursor-not-allowed"
+          : className === "danger"
+            ? "bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-600"
+            : "bg-cyan-700 hover:bg-cyan-600 dark:bg-cyan-600 dark:hover:bg-cyan-500"
       }`}
       onClick={onClick}
     >
-      <span className="mr-2">
+      <span className="flex items-center gap-2">
         {isLoading ? (
-          <Loader2 className="animate-spin size-4 text-white mr-2  " />
+          <Loader2 className="animate-spin size-5 text-white" />
         ) : (
           label
         )}
