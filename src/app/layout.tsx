@@ -13,6 +13,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "My Todo List",
   description: "Aplicação de lista de tarefas",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
   openGraph: {
     title: "My Todo List",
     description: "Aplicação de lista de tarefas",
