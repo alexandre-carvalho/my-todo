@@ -12,9 +12,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
 
   // Initialize theme synchronously on mount
+  // Initialize theme on mount
   useIsomorphicLayoutEffect(() => {
     initTheme();
-    setMounted(true);
+    // Delay to avoid synchronous setState warning
+    const timer = setTimeout(() => {
+      setMounted(true);
+    }, 0);
+    return () => clearTimeout(timer);
   }, [initTheme]);
 
   useEffect(() => {

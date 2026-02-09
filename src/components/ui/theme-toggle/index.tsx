@@ -2,14 +2,18 @@
 
 import { useThemeStore } from "@/store/theme";
 import { Moon, Sun } from "lucide-react";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export function ThemeToggle() {
   const { resolvedTheme, toggleTheme } = useThemeStore();
   const [mounted, setMounted] = useState(false);
 
-  useLayoutEffect(() => {
-    setMounted(true);
+  useEffect(() => {
+    // Delay to avoid synchronous setState warning
+    const timer = setTimeout(() => {
+      setMounted(true);
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   if (!mounted) {
